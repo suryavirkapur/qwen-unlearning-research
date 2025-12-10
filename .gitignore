@@ -1,0 +1,42 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ML artifacts and caches
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+unsloth_compiled_cache/
+wandb/
+mlruns/
+
+# HuggingFace cache (large model files)
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Outputs (keep structure but not generated files)
+outputs/*.json
+outputs/*.tex
+outputs/*.log
+!outputs/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
