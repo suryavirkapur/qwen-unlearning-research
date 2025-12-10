@@ -53,7 +53,8 @@ class BenchmarkConfig:
     lora_r: int = 16
     
     # Data settings
-    tofu_subset: str = "forget01"  # 1% of authors
+    benchmark: str = "tofu"  # 'tofu', 'muse', or 'wmdp'
+    benchmark_subset: str = "forget01"  # subset within benchmark
     max_length: int = 512
     batch_size: int = 1  # Conservative for 10GB VRAM
     
@@ -138,8 +139,12 @@ class UnlearningBenchmark:
         print(f"  Trainable params: {trainable:,} / {total:,} ({100*trainable/total:.2f}%)")
         
         # Load data
-        print("\n[2/3] Loading TOFU dataset...")
-        data = load_tofu_dataset(self.config.tofu_subset)
+        print(f"\n[2/3] Loading {self.config.benchmark.upper()} dataset...")
+        from src.data_utils import load_benchmark_dataset
+        data = load_benchmark_dataset(self.config.benchmark, self.config.benchmark_subset)
+        
+        if data.get("error"):
+            raise RuntimeError(f"Failed to load {self.config.benchmark}: {data['error']}")
         
         forget_dataset = UnlearningDataset(
             data["forget"], 
@@ -475,14 +480,26 @@ def main():
                         help="Output directory")
     parser.add_argument("--dry_run", action="store_true",
                         help="Quick test run with minimal steps")
+    parser.add_argument("--benchmark", type=str, default="tofu",
+                        choices=["tofu", "muse", "wmdp"],
+                        help="Benchmark dataset to use")
+    parser.add_argument("--subset", type=str, default=None,
+                        help="Dataset subset (tofu: forget01/05/10, muse: news/books, wmdp: bio/cyber)")
     
     args = parser.parse_args()
+    
+    # Set default subsets based on benchmark
+    subset = args.subset
+    if subset is None:
+        subset = {"tofu": "forget01", "muse": "news", "wmdp": "bio"}.get(args.benchmark, "forget01")
     
     # Create config
     config = BenchmarkConfig(
         max_steps=10 if args.dry_run else args.max_steps,
         batch_size=args.batch_size,
-        output_dir=args.output_dir
+        output_dir=args.output_dir,
+        benchmark=args.benchmark,
+        benchmark_subset=subset
     )
     
     # Run benchmark
