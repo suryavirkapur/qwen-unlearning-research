@@ -14,7 +14,7 @@ Benchmarking advanced machine unlearning methods on Qwen3-4B using the TOFU data
 
 ## Benchmarks
 
-### TOFU (Task of Fictitious Unlearning) ✅ *Implemented*
+### TOFU (Task of Fictitious Unlearning) 
 Uses fictitious author profiles as the forget set, testing whether models can unlearn specific factual knowledge while retaining general language capabilities. Configurations: `forget01` (1%), `forget05` (5%), `forget10` (10%).
 
 ### MUSE (Multi-turn, Unsafe, and Solicited Evaluations)
@@ -95,6 +95,3 @@ src/
 
 See [docs/issue_qwen.md](docs/issue_qwen.md) for Unsloth compatibility issues with Qwen3.
 
-## License
-
-MIT
