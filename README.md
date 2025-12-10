@@ -1,6 +1,6 @@
 # Qwen3-4B Machine Unlearning Research
 
-Benchmarking advanced machine unlearning methods on Qwen3-4B using the TOFU dataset.
+Benchmarking advanced machine unlearning methods on Qwen3-4B using the TOFU, MUSE, and WMDP datasets.
 
 ## Methods Implemented
 
